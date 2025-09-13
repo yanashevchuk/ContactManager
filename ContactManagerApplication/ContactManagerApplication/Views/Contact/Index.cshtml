@@ -1,0 +1,47 @@
+﻿@model IEnumerable<Contact>
+<h2>List of Contacts</h2>
+
+<form asp-action="UploadFile" asp-controller="Contact" method="post" enctype="multipart/form-data">
+    <div class="mb-3">
+        <label for="csvFile" class="form-label">Upload CSV File:</label>
+        <input type="file" name="csvFile" id="csvFile" class="form-control" accept=".csv" />
+        <button type="submit" class="btn btn-primary mt-2">Upload</button>
+    </div>
+</form>
+
+<table id="contactsTable" class="table table-striped">
+    <thead>
+        <tr>
+            <th>Name</th>
+            <th>Date of Birth</th>
+            <th>Married</th>
+            <th>Phone</th>
+            <th>Salary</th>
+            <th>Editing</th>
+            <th>Deleting</th>
+        </tr>
+    </thead>
+    <tbody>
+        @foreach (var contact in Model)
+        {
+            <tr data-id="@contact.Id">
+                <td class="editable-name">@contact.Name</td>
+                <td class="editable-date">@contact.DateOfBirth.ToString("yyyy-MM-dd")</td>
+                <td class="editable-married">@contact.Married</td>
+                <td class="editable-phone">@contact.Phone</td>
+                <td class="editable-salary">@contact.Salary.ToString("C2")</td>
+                <td>
+                    <button class="btn btn-warning edit-btn">Edit</button>
+                    <button class="btn btn-success save-btn d-none">Save</button>
+                    <button class="btn btn-secondary cancel-btn d-none">Cancel</button>
+                </td>
+                <td>
+                    <form asp-action="Delete" asp-controller="Contact" method="post">
+                        <input type="hidden" name="id" value="@contact.Id" />
+                        <button type="submit" class="btn btn-danger">Delete</button>
+                    </form>
+                </td>
+            </tr>
+        }
+    </tbody>
+</table>
